@@ -24,7 +24,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Navbar scroll effect
     const navbar = document.querySelector('.navbar');
-    let lastScroll = 0;
     
     window.addEventListener('scroll', function() {
         const currentScroll = window.pageYOffset;
@@ -34,22 +33,6 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             navbar.style.boxShadow = 'none';
         }
-        
-        lastScroll = currentScroll;
-    });
-    
-    // Smooth scroll for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }
-        });
     });
     
     // Form submission handling (for contact page)
