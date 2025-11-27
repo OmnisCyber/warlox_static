@@ -1,0 +1,15 @@
+{
+  "$schema": "https://aka.ms/azure/static-web-apps-cli/schema",
+  "configurations": {
+    "warlox-static": {
+      "appLocation": ".",
+      "outputLocation": "build",
+      "appBuildCommand": "cp *.html build/ && cp -r css build/ && cp -r js build/ && cp staticwebapp.config.json build/",
+      "apiBuildCommand": "",
+      "run": "",
+      "appDevserverUrl": "http://localhost:8080",
+      "appName": "warlox-static",
+      "resourceGroup": "warlox-static-rg"
+    }
+  }
+}
