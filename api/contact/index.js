@@ -56,8 +56,9 @@ module.exports = async function (context, req) {
 
         // Email content
         const mailOptions = {
-            from: process.env.SMTP_USER,
-            to: 'chad@warlox.org',
+            from: `"Warlox Contact Form" <${process.env.SMTP_USER}>`,
+            to: process.env.RECIPIENT_EMAIL || 'chad@warlox.org',
+            replyTo: email,
             subject: `New Contact Form Submission from ${name}`,
             html: `
                 <h2>New Contact Form Submission</h2>
