@@ -38,8 +38,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // Form submission handling (for contact page)
     const contactForm = document.getElementById('contactForm');
     if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
+        contactForm.addEventListener('submit', async function(e) {
             e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const formMessage = document.getElementById('formMessage');
+            const originalText = submitBtn.textContent;
             
             // Get form data
             const formData = new FormData(contactForm);
@@ -67,20 +71,57 @@ document.addEventListener('DOMContentLoaded', function() {
                 emailInput.style.borderColor = '#dc2626';
             }
             
-            if (isValid) {
-                // Show success message (in a real app, you'd send this to a server)
-                const submitBtn = contactForm.querySelector('button[type="submit"]');
-                const originalText = submitBtn.textContent;
-                submitBtn.textContent = 'Message Sent!';
-                submitBtn.disabled = true;
-                submitBtn.style.backgroundColor = '#16a34a';
+            if (!isValid) {
+                formMessage.style.display = 'block';
+                formMessage.style.color = '#dc2626';
+                formMessage.textContent = 'Please fill in all required fields correctly.';
+                return;
+            }
+            
+            // Show loading state
+            submitBtn.textContent = 'Sending...';
+            submitBtn.disabled = true;
+            formMessage.style.display = 'none';
+            
+            try {
+                // Send to API
+                const response = await fetch('/api/contact', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
                 
-                setTimeout(() => {
-                    submitBtn.textContent = originalText;
-                    submitBtn.disabled = false;
-                    submitBtn.style.backgroundColor = '';
+                const result = await response.json();
+                
+                if (response.ok && result.success) {
+                    // Success
+                    formMessage.style.display = 'block';
+                    formMessage.style.color = '#16a34a';
+                    formMessage.textContent = 'Thank you! Your message has been sent successfully.';
                     contactForm.reset();
-                }, 3000);
+                    
+                    submitBtn.textContent = 'Message Sent!';
+                    submitBtn.style.backgroundColor = '#16a34a';
+                    
+                    setTimeout(() => {
+                        submitBtn.textContent = originalText;
+                        submitBtn.disabled = false;
+                        submitBtn.style.backgroundColor = '';
+                        formMessage.style.display = 'none';
+                    }, 5000);
+                } else {
+                    throw new Error(result.error || 'Failed to send message');
+                }
+            } catch (error) {
+                console.error('Error submitting form:', error);
+                formMessage.style.display = 'block';
+                formMessage.style.color = '#dc2626';
+                formMessage.textContent = 'Failed to send message. Please try again or email us directly.';
+                
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
             }
         });
     }
