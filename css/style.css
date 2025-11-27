@@ -850,7 +850,7 @@ h4 { font-size: 1.15rem; }
 }
 
 /* ========================================
-   Services Vertical Layout
+   Services Vertical Layout - Zigzag Design
    ======================================== */
 .services-vertical {
     padding: 80px 0;
@@ -859,58 +859,88 @@ h4 { font-size: 1.15rem; }
 
 .service-block {
     display: grid;
-    grid-template-columns: 80px 120px 1fr;
-    gap: 48px;
-    padding: 80px 0;
-    border-bottom: 1px solid var(--color-gray-200);
+    grid-template-columns: 200px 1fr;
+    gap: 80px;
+    padding: 100px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
     position: relative;
+    align-items: center;
 }
 
 .service-block:last-child {
     border-bottom: none;
 }
 
-.service-number {
-    font-size: 5rem;
-    font-weight: 700;
-    color: var(--color-gray-200);
-    line-height: 1;
-    padding-top: 8px;
+/* Left alignment - icon on left */
+.service-block.service-left {
+    grid-template-columns: 200px 1fr;
+}
+
+/* Right alignment - icon on right */
+.service-block.service-right {
+    grid-template-columns: 1fr 200px;
 }
 
 .service-visual {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: center;
-    padding-top: 16px;
+    position: relative;
 }
 
 .service-visual svg {
     stroke: var(--color-red);
-    filter: drop-shadow(0 4px 8px rgba(230, 57, 70, 0.1));
+    filter: drop-shadow(0 8px 16px rgba(230, 57, 70, 0.15));
+    transition: all 0.4s ease;
+}
+
+.service-block:hover .service-visual svg {
+    transform: scale(1.05);
+    filter: drop-shadow(0 12px 24px rgba(230, 57, 70, 0.25));
+}
+
+.service-details {
+    max-width: 800px;
 }
 
 .service-details h2 {
-    font-size: 2.5rem;
-    margin-bottom: 16px;
+    font-size: 2.75rem;
+    margin-bottom: 20px;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
 }
 
 .service-intro {
-    font-size: 1.15rem;
+    font-size: 1.2rem;
     color: var(--color-gray-600);
     margin-bottom: 48px;
-    line-height: 1.7;
+    line-height: 1.8;
 }
 
 .service-offerings {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 32px;
+    gap: 40px;
+}
+
+.offering {
+    padding: 24px;
+    background-color: var(--color-gray-50);
+    border-radius: 12px;
+    border: 1px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.offering:hover {
+    background-color: var(--color-white);
+    border-color: rgba(230, 57, 70, 0.15);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    transform: translateY(-2px);
 }
 
 .offering h4 {
-    font-size: 1.1rem;
-    margin-bottom: 8px;
+    font-size: 1.15rem;
+    margin-bottom: 10px;
     color: var(--color-black);
     font-weight: 600;
 }
@@ -918,7 +948,8 @@ h4 { font-size: 1.15rem; }
 .offering p {
     font-size: 0.95rem;
     color: var(--color-gray-600);
-    line-height: 1.6;
+    line-height: 1.7;
+    margin: 0;
 }
 
 @media (max-width: 768px) {
@@ -926,38 +957,40 @@ h4 { font-size: 1.15rem; }
         display: flex;
     }
     
-    .service-block {
+    .service-block,
+    .service-block.service-left,
+    .service-block.service-right {
         grid-template-columns: 1fr;
-        gap: 24px;
-        padding: 48px 0;
-    }
-    
-    .service-number {
-        font-size: 3rem;
+        gap: 32px;
+        padding: 60px 0;
     }
     
     .service-visual {
         justify-content: flex-start;
-        padding-top: 0;
+        order: -1;
     }
     
     .service-visual svg {
-        width: 48px;
-        height: 48px;
+        width: 60px;
+        height: 60px;
     }
     
     .service-details h2 {
-        font-size: 1.75rem;
+        font-size: 2rem;
     }
     
     .service-intro {
-        font-size: 1rem;
+        font-size: 1.05rem;
         margin-bottom: 32px;
     }
     
     .service-offerings {
         grid-template-columns: 1fr;
-        gap: 24px;
+        gap: 20px;
+    }
+    
+    .offering {
+        padding: 20px;
     }
     
     .nav-links {
