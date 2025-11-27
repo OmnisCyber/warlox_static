@@ -46,11 +46,14 @@ module.exports = async function (context, req) {
         // Configure email transporter using environment variables
         const transporter = nodemailer.createTransport({
             host: process.env.SMTP_HOST || 'smtp.gmail.com',
-            port: process.env.SMTP_PORT || 587,
+            port: parseInt(process.env.SMTP_PORT) || 587,
             secure: false,
             auth: {
                 user: process.env.SMTP_USER,
                 pass: process.env.SMTP_PASS
+            },
+            tls: {
+                rejectUnauthorized: false
             }
         });
 
@@ -97,10 +100,17 @@ Submitted from warlox.org contact form
 
     } catch (error) {
         context.log.error('Error processing contact form:', error);
+        context.log.error('Error details:', {
+            message: error.message,
+            code: error.code,
+            command: error.command,
+            response: error.response
+        });
         context.res.status = 500;
         context.res.body = {
             success: false,
-            error: 'Failed to send message. Please try again later.'
+            error: 'Failed to send message. Please try again later.',
+            debug: process.env.NODE_ENV === 'development' ? error.message : undefined
         };
     }
 };
